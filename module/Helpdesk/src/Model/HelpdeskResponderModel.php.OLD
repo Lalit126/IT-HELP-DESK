@@ -1,0 +1,14 @@
+<?php
+
+namespace Helpdesk\Model;
+
+class HelpdeskResponderModel {
+    public $TICKET_ID;
+    public $RESPONDER_ID;
+    
+    public function exchangeArray(array $data)
+    {
+        $this->TICKET_ID = ((!empty($data["TICKET_ID"])) ? $data["TICKET_ID"] : null);
+        $this->RESPONDER_ID = ((!empty($data["RESPONDER_ID"])) ? $data["RESPONDER_ID"] : null);
+    }
+}

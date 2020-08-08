@@ -1,0 +1,68 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
+?>
+
+<div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-header helpdesk-card">
+					<h3>Helpdesk Ticket #<?= $this->id; ?> Details</h3>
+				</div>
+				
+				<div class="card-body helpdesk-card" id="helpdesk-view">
+					<div class="row">
+						<div class="col-xs-2 col-sm-2">
+							<dt><?= $this->formLabel($this->form->get("ENTERED_BY")) ?></dt>
+						</div>
+						<div class="col-xs-10 col-sm-2">
+							<span><?= $this->ticket->getEnteredBy() ?></span>
+						</div>
+						<div class="col-xs-2 col-sm-2">
+							<dt><?= $this->formLabel($this->form->get("ENTERED_ON")) ?></dt>
+						</div>
+						<div class="col-xs-5 col-sm-3">
+							<span><?= $this->ticket->getEnteredOn_DateTime() ?></span>
+						</div>
+						<div class="col-xs-2 col-sm-2">
+							<dt><?= $this->formLabel($this->form->get("PC_NAME")) ?></dt>
+						</div>
+						<div class="col-xs-3 col-sm-1">
+							<span><?= $this->ticket->getPCName() ?></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2 col-sm-2">
+							<dt><?= $this->formLabel($this->form->get("LOCATION_ID")) ?></dt>
+						</div>
+						<div class="col-xs-10 col-sm-2">
+							<span><?= (($this->ticket->getLocation()) ? $this->ticket->getLocation()->getLocation() : "N/A") ?></span>
+						</div>
+						<div class="col-xs-2 col-sm-2">
+							<dt><?= $this->formLabel($this->form->get("PROBLEM_TYPE_ID")) ?></dt>
+						</div>
+						<div class="col-xs-10 col-sm-2">
+							<span><?= (($this->ticket->getProblemType()) ? $this->ticket->getProblemType()->getProblemType() : "N/A") ?></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row"><br/></div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12">
+			<div class="card">
+				<div class="card-header helpdesk-card">
+					<h3>Administrative Options</h3>
+				</div>
+				
+				<div class="card-body helpdesk-card" id="helpdesk-admin">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

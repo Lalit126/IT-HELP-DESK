@@ -1,0 +1,279 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
+?>
+<div>
+	<div class="row">
+		<div class="col-xs-12 col-md-12">
+			<div class="card">
+				<div class="card-header helpdesk-card">
+					<h3>Helpdesk Tickets</h3>
+					<br/>
+					<ul class="nav nav-tabs card-header-tabs" id="helpdesk-ticket-types" role="tablist">
+						<li class="nav-item"><a class="nav-link active" href="#unassigned" role="tab" aria-control="unassigned" aria-selected="true">Unassigned</a></li>
+						<li class="nav-item"><a class="nav-link" href="#followups" role="tab" aria-control="followups" aria-selected="false">Followups</a></li>
+						<li class="nav-item"><a class="nav-link" href="#pending" role="tab" aria-control="pending" aria-selected="false">Pending</a></li>
+						<li class="nav-item"><a class="nav-link" href="#ordered" role="tab" aria-control="ordered" aria-selected="false">Ordered</a></li>
+						<li class="nav-item"><a class="nav-link" href="#closed" role="tab" aria-control="closed" aria-selected="false">Closed</a></li>
+					</ul>
+				
+					<!--<div class="collapse-panel">
+						<a href="#" id="helpdesk-view-collapse" onClick="javascript:collapse('helpdesk-view','slow');return false;" data-toggle="tooltip" data-placement="top" data-original-title="Collapse/Expand Section" title=""><img src="/img/bootstrap/pluscircle.svg" alt="" width="32" height="32"></a>
+					</div>-->
+				</div>
+				
+				<div class="card-body helpdesk-card" id="helpdesk-view">
+					<div class="tab-content" id="helpdesk-ticket-content">
+						<div class="tab-pane active" id="unassigned" role="tabpanel" aria-labelledby="unassigned-tab">
+							<table class="table table-striped table-hover tickets">
+								<tr>
+									<th></th>
+									<th>Ticket</th>
+									<th>Submitted</th>
+									<th>Requestor</th>
+									<th>Location</th>
+									<th>PC Name</th>
+									<th>Problem Type</th>
+									<th></th>
+								</tr>
+								<?php if ($this->unassigned && $this->unassigned->getTotalItemCount() > 0) { ?>
+    								<?php foreach ($this->unassigned as $ticket) : ?>
+        								<tr>
+        									<td><img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/exclamation-diamond-fill.svg') ?>" alt="" width="16" height="16"></td>
+        									<td><?= $this->escapeHtml($ticket->getTicketId()) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getEnteredOn()) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getEnteredBy()) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getLocation()) ? $ticket->getLocation()->getLocation() : "N/A")) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getPCName()) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getProblemType()) ? $ticket->getProblemType()->getProblemType() : "N/A")) ?></td>
+                                            <td>
+                                            	<table>
+                                            		<tr>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/view', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-info" src="<?= $this->basePath('img/bootstrap/newspaper.svg') ?>" alt="View" data-toggle="tooltip" data-placement="top" data-original-title="View" title="" width="16" height="16"/></a></td>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/edit', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/file-post.svg') ?>" alt="Edit" data-toggle="tooltip" data-placement="top" data-original-title="Edit" title="" width="16" height="16"/></a></td>
+                                            		</tr>
+                                            	</table>
+                                            </td>
+        								</tr>
+        							<?php endforeach; ?>
+    							<?php } ?>
+    							<?php if (!$this->unassigned || $this->unassigned->getTotalItemCount() <= 0) { ?>
+    								<tr><td colspan="8" style="color: red; text-align: center;">No Tickets Found</td></tr>
+    							<?php } ?>
+							</table>
+						</div>
+						
+						<div class="tab-pane" id="followups" role="tabpanel" aria-labelledby="followups-tab">
+							<table class="table table-striped table-hover tickets">
+                                <tr>
+                                	<th></th>
+                                    <th>Ticket</th>
+                                    <th>Submitted</th>
+                                    <th>Followup</th>
+                                    <th>Location</th>
+                                    <th>Problem Type</th>
+                                    <th>Status</th>
+                                    <th>Responder(s)</th>
+                                    <th></th>
+                                </tr>
+                                <?php if ($this->followups && $this->followups->getTotalItemCount() > 0) { ?>
+                                    <?php foreach ($this->followups as $ticket) : ?>
+                                        <tr>
+                                        	<td>
+                                        		<img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/exclamation-diamond-fill.svg') ?>" alt="" width="16" height="16">
+                                        		<!---
+                                        		<svg class="bi bi-exclamation-diamond-fill text-success" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                  <path fill-rule="evenodd" d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 4a.905.905 0 00-.9.995l.35 3.507a.552.552 0 001.1 0l.35-3.507A.905.905 0 008 4zm.002 6a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <object type="image/svg+xml" data="/img/bootstrap/exclamation-diamond-fill.svg"></object>
+                                                --->
+                                        	</td>
+                                            <td><?= $this->escapeHtml($ticket->getTicketId()) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getEnteredOn()) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getLatestFollowup()) ? $ticket->getLatestFollowup()->getFollowupOn() : "")) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getLocation()) ? $ticket->getLocation()->getLocation() : "N/A")) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getProblemType()) ? $ticket->getProblemType()->getProblemType() : "N/A")) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getStatus()) ? $ticket->getStatus()->getStatus() : "N/A")) ?></td>
+                                            <td>
+                                            	<table class="table table-sm">
+                                            		<?php foreach ($ticket->getResponders() as $responder) : ?>
+                                            			<tr><td><?= $this->escapeHtml($responder) ?></td></tr>
+                                            		<?php endforeach; ?>
+                                            	</table>
+                                            </td>
+                                            <td>
+                                            	<table>
+                                            		<tr>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/view', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-info" src="<?= $this->basePath('img/bootstrap/newspaper.svg') ?>" alt="View" data-toggle="tooltip" data-placement="top" data-original-title="View" title="" width="16" height="16"/></a></td>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/edit', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/file-post.svg') ?>" alt="Edit" data-toggle="tooltip" data-placement="top" data-original-title="Edit" title="" width="16" height="16"/></a></td>
+                                            		</tr>
+                                            	</table>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php } ?>
+                                <?php if (!$this->followups || $this->followups->getTotalItemCount() <= 0) { ?>
+    								<tr><td colspan="9" style="color: red; text-align: center;">No Tickets Found</td></tr>
+    							<?php } ?>
+                            </table>
+						</div>
+						
+						<div class="tab-pane" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+							<table class="table table-striped table-hover tickets">
+								<tr>
+									<th></th>
+									<th>Ticket</th>
+									<th>Submitted</th>
+									<th>Requestor</th>
+									<th>Location</th>
+									<th>Problem Type</th>
+									<th>Status</th>
+									<th>Responder(s)</th>
+									<th></th>
+								</tr>
+								<?php if ($this->pending && $this->pending->getTotalItemCount() > 0) { ?>
+    								<?php foreach ($this->pending as $ticket) : ?>
+        								<tr>
+        									<td><img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/exclamation-diamond-fill.svg') ?>" alt="" width="16" height="16"></td>
+        									<td><?= $this->escapeHtml($ticket->getTicketId()) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getEnteredOn()) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getEnteredBy()) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getLocation()) ? $ticket->getLocation()->getLocation() : "N/A")) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getProblemType()) ? $ticket->getProblemType()->getProblemType() : "N/A")) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getStatus()) ? $ticket->getStatus()->getStatus() : "N/A")) ?></td>
+                                            <td>
+                                            	<table class="table table-sm">
+                                            		<?php foreach ($ticket->getResponders() as $responder) : ?>
+                                            			<tr><td><?= $this->escapeHtml($responder) ?></td></tr>
+                                            		<?php endforeach; ?>
+                                            	</table>
+                                            </td>
+                                            <td>
+                                            	<table>
+                                            		<tr>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/view', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-info" src="<?= $this->basePath('img/bootstrap/newspaper.svg') ?>" alt="View" data-toggle="tooltip" data-placement="top" data-original-title="View" title="" width="16" height="16"/></a></td>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/edit', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/file-post.svg') ?>" alt="Edit" data-toggle="tooltip" data-placement="top" data-original-title="Edit" title="" width="16" height="16"/></a></td>
+                                            		</tr>
+                                            	</table>
+                                            </td>
+        								</tr>
+        							<?php endforeach; ?>
+    							<?php } ?>
+    							<?php if (!$this->pending || $this->pending->getTotalItemCount() <= 0) { ?>
+    								<tr><td colspan="9" style="color: red; text-align: center;">No Tickets Found</td></tr>
+    							<?php } ?>
+							</table>
+						</div>
+						
+						<div class="tab-pane" id="ordered" role="tabpanel" aria-labelledby="ordered-tab">
+							<table class="table table-striped table-hover tickets">
+								<tr>
+									<th></th>
+									<th>Ticket</th>
+									<th>Submitted</th>
+									<th>Requestor</th>
+									<th>Location</th>
+									<th>Problem Type</th>
+									<th>Status</th>
+									<th>Responder(s)</th>
+									<th></th>
+								</tr>
+								<?php if ($this->ordered && $this->ordered->getTotalItemCount() > 0) { ?>
+    								<?php foreach ($this->ordered as $ticket) : ?>
+        								<tr>
+        									<td><img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/exclamation-diamond-fill.svg') ?>" alt="" width="16" height="16"></td>
+        									<td><?= $this->escapeHtml($ticket->getTicketId()) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getEnteredOn()) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getEnteredBy()) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getLocation()) ? $ticket->getLocation()->getLocation() : "N/A")) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getProblemType()) ? $ticket->getProblemType()->getProblemType() : "N/A")) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getStatus()) ? $ticket->getStatus()->getStatus() : "N/A")) ?></td>
+                                            <td>
+                                            	<table class="table table-sm">
+                                            		<?php foreach ($ticket->getResponders() as $responder) : ?>
+                                            			<tr><td><?= $this->escapeHtml($responder) ?></td></tr>
+                                            		<?php endforeach; ?>
+                                            	</table>
+                                            </td>
+                                            <td>
+                                            	<table>
+                                            		<tr>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/view', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-info" src="<?= $this->basePath('img/bootstrap/newspaper.svg') ?>" alt="View" data-toggle="tooltip" data-placement="top" data-original-title="View" title="" width="16" height="16"/></a></td>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/edit', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/file-post.svg') ?>" alt="Edit" data-toggle="tooltip" data-placement="top" data-original-title="Edit" title="" width="16" height="16"/></a></td>
+                                            		</tr>
+                                            	</table>
+                                            </td>
+        								</tr>
+        							<?php endforeach; ?>
+    							<?php } ?>
+    							<?php if (!$this->ordered || $this->ordered->getTotalItemCount() <= 0) { ?>
+    								<tr><td colspan="9" style="color: red; text-align: center;">No Tickets Found</td></tr>
+    							<?php } ?>
+							</table>
+						</div>
+						
+						<div class="tab-pane" id="closed" role="tabpanel" aria-labelledby="closed-tab">
+							<table class="table table-striped table-hover tickets">
+								<tr>
+									<th></th>
+									<th>Ticket</th>
+									<th>Submitted</th>
+									<th>Requestor</th>
+									<th>Location</th>
+									<th>Problem Type</th>
+									<th>Status</th>
+									<th>Responder(s)</th>
+									<th></th>
+								</tr>
+								<?php if ($this->closed && $this->closd->getTotalItemCount() > 0) { ?>
+    								<?php foreach ($this->closed as $ticket) : ?>
+        								<tr>
+        									<td><img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/exclamation-diamond-fill.svg') ?>" alt="" width="16" height="16"></td>
+        									<td><?= $this->escapeHtml($ticket->getTicketId()) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getEnteredOn()) ?></td>
+                                            <td><?= $this->escapeHtml($ticket->getEnteredBy()) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getLocation()) ? $ticket->getLocation()->getLocation() : "N/A")) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getProblemType()) ? $ticket->getProblemType()->getProblemType() : "N/A")) ?></td>
+                                            <td><?= $this->escapeHtml((($ticket->getStatus()) ? $ticket->getStatus()->getStatus() : "N/A")) ?></td>
+                                            <td>
+                                            	<table class="table table-sm">
+                                            		<?php foreach ($ticket->getResponders() as $responder) : ?>
+                                            			<tr><td><?= $this->escapeHtml($responder) ?></td></tr>
+                                            		<?php endforeach; ?>
+                                            	</table>
+                                            </td>
+                                            <td>
+                                            	<table>
+                                            		<tr>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/view', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-info" src="<?= $this->basePath('img/bootstrap/newspaper.svg') ?>" alt="View" data-toggle="tooltip" data-placement="top" data-original-title="View" title="" width="16" height="16"/></a></td>
+                                            			<td valign="top" style="padding-top: 0px; padding-bottom: 0px; border: 0px;"><a href="<?= $this->url('helpdesk/edit', ['id' => $ticket->getTicketId()]) ?>"><img class="svg text-danger" src="<?= $this->basePath('img/bootstrap/file-post.svg') ?>" alt="Edit" data-toggle="tooltip" data-placement="top" data-original-title="Edit" title="" width="16" height="16"/></a></td>
+                                            		</tr>
+                                            	</table>
+                                            </td>
+        								</tr>
+        							<?php endforeach; ?>
+    							<?php } ?>
+    							<?php if (!$this->closed || $this->closed->getTotalItemCount() <= 0) { ?>
+    								<tr><td colspan="9" style="color: red; text-align: center;">No Tickets Found</td></tr>
+    							<?php } ?>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?=
+    $this->inlineScript()->captureStart();
+    echo <<<JS
+    $(document).ready(function() {
+    	$("#helpdesk-ticket-types a").on("click", function(e) {
+    		e.preventDefault();
+    		$(this).tab("show");
+    	});
+    });
+    JS;
+    $this->inlineScript()->captureEnd();
+?>
